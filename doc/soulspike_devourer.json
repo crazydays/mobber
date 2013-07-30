@@ -1,0 +1,142 @@
+{
+  "name":"Soulspike Devourer",
+  "level":20,
+  "role":"leader",
+  "size":"huge",
+  "origin":"shadow",
+  "type":"humanoid",
+  "keywords":["undead"],
+  "xp":45000,
+  "initiative":11,
+  "senses":{
+    "perception":15,
+    "special":["darkvision"]
+  },
+  "auras":[
+    {
+      "name":"Soulspike Ward",
+      "keywords":[],
+      "range":10,
+      "description":"the soulspike devourer and all allies in the aura gain a bonus to all defenses equal to one-half the number of soulspiked spirits impaled on the creature."
+    }
+  ],
+  "defenses":{
+    "hitpoints":375,
+    "bloodied":188,
+    "armourclass":38,
+    "fortitude":37,
+    "reflex":29,
+    "will":34,
+    "immune":["disease"],
+    "resist":[
+      {
+        "type":"necrotic",
+        "value":20
+      }
+    ],
+    "vunlerable":[
+      {
+        "type":"radiant",
+        "value":10,
+        "description":"when the soulspike devourer takes radiant damage, its newest soulspiked spirit gets a saving throw to escape"
+      }
+    ]
+  },
+  "saving_throws":2,
+  "speed":6,
+  "action_points":1,
+  "abilities":[
+    {
+      "type":null,
+      "name":"Claw",
+      "action":"standard",
+      "recharge":"at-will",
+      "keywords":[],
+      "range":{
+        "reach":3
+      },
+      "attack":{
+        "bonus":26,
+        "versus":"AC"
+      },
+      "damage":[
+        {
+          "count":2,
+          "die":8,
+          "bonus":9
+        }
+      ],
+      "hit":"If the attack reduces a humanoid living target to 0 hit points or fewer, the target disappears and becomes a soulspiked spirit impaled on the devourer (see soulspiked spirit).",
+      "miss":null
+    },
+    {
+      "type":null,
+      "name":"Soul Shatter",
+      "action":"standard",
+      "recharge":"recharges when the soulspike devourer uses a devour spirit",
+      "keywords":["necrotic"],
+      "range":{
+        "burst":3
+      },
+      "attack":{
+        "bonus":24,
+        "versus":"will"
+      },
+      "damage":[
+        {
+          "count":5,
+          "die":8,
+          "bonus":8,
+          "keywords":["necrotic"]
+        }
+      ],
+      "hit":"the target is stunned until the end of the soulspike devourer's next term.  Aftereffect: Target is weakened (save ends)",
+      "miss":null
+    },
+    {
+      "type":null,
+      "name":"Devour Spirit",
+      "action":"standard",
+      "recharge":"at-will",
+      "keywords":["healing"],
+      "description":"The soulspike devourer instantly kills the oldest soulspiked spirit and regains 75 hit points.  A creature's dead body appears in a space adjacent to the devourer."
+    },
+    {
+      "type":null,
+      "name":"Soulspiked Spirit",
+      "description":"The soulspiked devourer begins the encounter with one soulspiked spirit and impale up to four soulspiked spirits.  A soulspiked spirit can take no action and escapes when the devourer is destroyed.  When a creature's spirit escapes, its body appears in an unoccupied space adjacent to the devourer, in the same state is was when it disappeared."
+    }
+  ],
+  "alignment":"evil",
+  "languages":["common"],
+  "ability_scores":{
+    "strength":{
+      "value":29,
+      "modifier":19
+    },
+    "dexterity":{
+      "value":8,
+      "modifier":9
+    },
+    "wisdom":{
+      "value":11,
+      "modifier":10
+    },
+    "constitution":{
+      "value":20,
+      "modifier":15
+    },
+    "intelligence":{
+      "value":20,
+      "modifier":15
+    },
+    "charisma":26,
+    "modifier":18
+  },
+  "equipment":[
+    {
+      "name":"Longsword",
+      "description":"Yeah, a longword.  So what."
+    }
+  ]
+}
