@@ -41,7 +41,19 @@ class syntax_plugin_mobber
   public function render($mode, &$renderer, $data)
   {
     if($mode != 'xhtml') return false;
-    $renderer->doc .= '<div>booyah!' . $data[0] . '</div>';
+
+    $mob = $this->decode($data[0]);
+    if ($mob == null) {
+      $renderer->doc .= '<div>Unable to parse: ' . $data[0] . '</div>';
+    } else {
+      $renderer->doc .=  '<div>' . var_dump($mob) . '</div>';
+    }
+
     return true;
+  }
+
+   private function decode($json)
+  {
+    return json_decode($json, true);
   }
 }
