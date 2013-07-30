@@ -1,0 +1,7 @@
+base   mobber
+author Aaron
+email  daya-mobber@crazydays.org
+date   2013-07-30
+name   mobber plugin
+desc   D&D 4th Edition Monster
+url    https://github.com/crazydays/mobber
