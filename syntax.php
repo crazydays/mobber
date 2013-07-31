@@ -46,7 +46,7 @@ class syntax_plugin_mobber
     if ($mob == null) {
       $renderer->doc .= '<div>Unable to parse: ' . $data[0] . '</div>';
     } else {
-      $renderer->doc .=  '<div>' . var_dump($mob) . '</div>';
+      $renderer->doc .=  '<div>' . render_mob($mob) . '</div>';
     }
 
     return true;
@@ -61,7 +61,8 @@ class syntax_plugin_mobber
   {
     return '<div class="mobber">' . $mob->{'name'} . '</div>';
   }
-  
+
+/*  
   private function render_head($mob)
   {
     return  '<div class="row head">' .
@@ -91,4 +92,5 @@ class syntax_plugin_mobber
   {
     return '<div class="value half xp">' . $mob{'xp'} . '</div>';
   }
+*/
 }
