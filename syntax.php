@@ -160,16 +160,16 @@ class syntax_plugin_mobber
       $joined .= ' ' . ucwords($mob->{'type'}) . ' ';
     }
 
-    // if ($mob->{'keywords'} && count($mob->{'keywords'}) > 0) {
-    //   $joined .= '(';
-    //   for ($i = 0; $i < count($mob->{'keywords'}); $i++) {
-    //     if ($i > 0) {
-    //       $joined .= ', ';
-    //     }
-    //     $joined .= $mob->{'keywords'}[$i];
-    //   }
-    //   $joined .= ')';
-    // }
+    if ($mob->{'keywords'} && count($mob->{'keywords'}) > 0) {
+      $joined .= '(';
+      for ($i = 0; $i < count($mob->{'keywords'}); $i++) {
+        if ($i > 0) {
+          $joined .= ', ';
+        }
+        $joined .= ucwords($mob->{'keywords'}[$i]);
+      }
+      $joined .= ')';
+    }
     
     return $joined;
   }
