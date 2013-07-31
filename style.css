@@ -1,0 +1,48 @@
+.mobber {
+	box-sizing: border-box;
+	display: inline-block;
+	width: 450px;
+	
+	font-family: sans-serif;
+	font-size: 10pt;
+	line-height: 20px;
+}
+
+.mobber .row {
+	padding-left: 4px;
+	width: 446px;
+	background: rgba(230, 230, 230, 0.8);
+}
+
+.mobber .half {
+	width: 219px;
+}
+
+.mobber .head {
+	color: rgba(230, 230, 230, 0.8);
+	background: rgba(25, 25, 25, 0.8);
+}
+
+.mobber .head .name {
+	display: inline-block;
+	font-weight: bold;
+}
+
+.mobber .head .level_role {
+	display: inline-block;
+	text-align: right;
+}
+
+.mobber .head .size_origin_type_keywords {
+	display: inline-block;
+}
+
+.mobber .head .xp {
+	display: inline-block;
+	text-align: right;
+}
+
+.mobber .head .xp:after {
+	content: " XP";
+}
+
