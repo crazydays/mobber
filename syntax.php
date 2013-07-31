@@ -118,19 +118,19 @@ class syntax_plugin_mobber
     $role = '';
 
     if ($mob->{'elite'}) {
-      $role .= 'Elite ';
+      $role .= ' Elite ';
     }
 
     if ($mob->{'solo'}) {
-      $role .= 'Solo ';
+      $role .= ' Solo ';
     }
     
     if ($mob->{'role'}) {
-      $role .= ucwords($mob->{'role'});
+      $role .= ' ' . ucwords($mob->{'role'}) . ' ';
     }
     
     if ($mob->{'leader'}) {
-      $role .= '(Leader)';
+      $role .= ' (Leader) ';
     }
     
     return $role;
@@ -149,15 +149,15 @@ class syntax_plugin_mobber
     $joined = '';
     
     if ($mob->{'size'}) {
-      $joined .= ucwords($mob->{'size'});
+      $joined .= ' ' . ucwords($mob->{'size'}) . ' ';
     }
     
     if ($mob->{'origin'}) {
-      $joined .= ucwords($mob->{'origin'});
+      $joined .= ' ' . ucwords($mob->{'origin'}) . ' ';
     }
 
     if ($mob->{'type'}) {
-      $joined .= ucwords($mob->{'type'});
+      $joined .= ' ' . ucwords($mob->{'type'}) . ' ';
     }
 
     // if ($mob->{'keywords'} && count($mob->{'keywords'}) > 0) {
@@ -187,7 +187,7 @@ class syntax_plugin_mobber
     $joined = '';
     
     if ($mob->{'xp'}) {
-      $joined .= $mob->{'xp'};
+      $joined .= ' ' . $mob->{'xp'} . ' ';
     }
     
     return $joined;
