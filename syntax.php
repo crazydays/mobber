@@ -56,13 +56,12 @@ class syntax_plugin_mobber
   {
     return json_decode($json);
   }
-  
+
   private function render_mob($mob)
   {
-    return '<div class="mobber">' . $mob->{'name'} . '</div>';
+    return '<div class="mobber">' . $this->render_head($mob) . '</div>';
   }
 
-/*  
   private function render_head($mob)
   {
     return  '<div class="row head">' .
@@ -74,23 +73,22 @@ class syntax_plugin_mobber
 
   private function render_head_name($mob)
   {
-    return '<div class="value half name">' . $mob{'name'} . '</div>';
+    return '<div class="value half name">' . $mob->{'name'} . '</div>';
   }
-  
+
   private function render_head_level_role($mob)
   {
     return '<div class="value half level_role">Level ' .
-           $mob{'level'} . 'Elite Soldier (' . $mob{'role'} . ')' . '</div>';
+           $mob->{'level'} . 'Elite Soldier (' . $mob->{'role'} . ')' . '</div>';
   }
-  
+
   private function render_head_size_origin_type_keywords($mob)
   {
     return '<div class="value half size_origin_type_keywords">Huge shadow humanoid (undead)</div>';
   }
-  
+
   private function render_head_xp($mob)
   {
-    return '<div class="value half xp">' . $mob{'xp'} . '</div>';
+    return '<div class="value half xp">' . $mob->{'xp'} . '</div>';
   }
-*/
 }
