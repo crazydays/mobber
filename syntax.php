@@ -46,7 +46,7 @@ class syntax_plugin_mobber
     if ($mob == null) {
       $renderer->doc .= '<div>Unable to parse: ' . $data[0] . '</div>';
     } else {
-      $renderer->doc .=  '<div>' . render_mob($mob) . '</div>';
+      $renderer->doc .=  '<div>' . $this->render_mob($mob) . '</div>';
     }
 
     return true;
