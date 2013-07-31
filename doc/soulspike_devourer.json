@@ -1,7 +1,10 @@
 {
   "name":"Soulspike Devourer",
   "level":20,
-  "role":"leader",
+  "elite":true,
+  "solo":false,
+  "role":"soldier",
+  "leader":true,
   "size":"huge",
   "origin":"shadow",
   "type":"humanoid",
