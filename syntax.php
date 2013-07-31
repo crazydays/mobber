@@ -59,7 +59,7 @@ class syntax_plugin_mobber
   
   private function render_mob($mob)
   {
-    return '<div class="mobber">' . $this->render_head($mob) . '</div>';
+    return '<div class="mobber">' . $mob->{'name'} . '</div>';
   }
   
   private function render_head($mob)
