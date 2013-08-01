@@ -48,7 +48,7 @@
   "saving_throws":2,
   "speed":6,
   "action_points":1,
-  "abilities":[
+  "powers":[
     {
       "type":null,
       "name":"Claw",
@@ -79,7 +79,7 @@
       "recharge":"recharges when the soulspike devourer uses a devour spirit",
       "keywords":["necrotic"],
       "range":{
-        "burst":3
+        "close_burst":3
       },
       "attack":{
         "bonus":24,

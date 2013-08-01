@@ -63,6 +63,7 @@ class syntax_plugin_mobber
       '<div class="mobber">' .
         $this->render_head($mob) .
         $this->render_body($mob) .
+        $this->render_powers($mob) .
       '</div>';
   }
 
@@ -87,7 +88,7 @@ class syntax_plugin_mobber
 
   private function join_name($mob)
   {
-    return $this->join($mob, 'name');
+    return $this->join($mob, 'name', false, false);
   }
 
   private function render_head_level_role($mob)
@@ -95,14 +96,13 @@ class syntax_plugin_mobber
     return
       '<div class="value half level_role">' .
         $this->join_level($mob) .
-        ' ' .
         $this->join_role($mob) .
       '</div>';
   }
 
   private function join_level($mob)
   {
-    return 'Level' . $this->join($mob, 'level');
+    return 'Level' . $this->join($mob, 'level', false);
   }
 
   private function join_role($mob)
@@ -118,7 +118,7 @@ class syntax_plugin_mobber
     }
     
     if ($mob->{'role'}) {
-      $role .= $this->join($mob, 'role');
+      $role .= $this->join($mob, 'role', true, true);
     }
     
     if ($mob->{'leader'}) {
@@ -138,17 +138,13 @@ class syntax_plugin_mobber
 
   private function join_size_origin_type_keywords($mob)
   {
-    $joined = $this->join($mob, 'size') . $this->join($mob, 'origin') . $this->join($mob, 'type');
+    $joined =
+      $this->join($mob, 'size', false, false) .
+      $this->join($mob, 'origin', true, false) .
+      $this->join($mob, 'type');
     
     if ($mob->{'keywords'} && count($mob->{'keywords'}) > 0) {
-      $joined .= '(';
-      for ($i = 0; $i < count($mob->{'keywords'}); $i++) {
-        if ($i > 0) {
-          $joined .= ', ';
-        }
-        $joined .= ucwords($mob->{'keywords'}[$i]);
-      }
-      $joined .= ')';
+      $joined .= '(' . $this->join_array($mob, 'keywords') . ')';
     }
     
     return $joined;
@@ -164,7 +160,7 @@ class syntax_plugin_mobber
   
   private function join_xp($mob)
   {
-    return $this->join($mob, 'xp', true, true);
+    return $this->join($mob, 'xp', true, false);
   }
   
   private function render_body($mob)
@@ -176,7 +172,10 @@ class syntax_plugin_mobber
       $this->render_defenses($mob) .
       $this->render_immune($mob) .
       $this->render_resist($mob) .
-      $this->render_vulnerable($mob);
+      $this->render_vulnerable($mob) .
+      $this->render_saving_throws($mob) .
+      $this->render_speed($mob) .
+      $this->render_action_points($mob);
   }
 
   private function render_initiative_senses($mob)
@@ -213,10 +212,9 @@ class syntax_plugin_mobber
     $senses = $mob->{'senses'};
     
     if ($senses) {
-      
       return
         '<div class="group senses">' .
-          '<div class="label"> Senses </div>' .
+          '<div class="label">Senses</div>' .
           $this->render_perception($senses) .
           $this->render_senses_special($senses) .
         '</div>';
@@ -278,11 +276,11 @@ class syntax_plugin_mobber
     $joined .= '<div class="group aura">';
     
     if ($aura->{'name'}) {
-      $joined .= '<div class="label">' . $this->join($aura, 'name') . '</div>';
+      $joined .= '<div class="label">' . $this->join($aura, 'name', false) . '</div>';
     }
 
     if ($aura->{'keywords'}) {
-      $joined .= '<div class="value"> (' . $this->join_array($aura, 'keywords') . ')</div>';
+      $joined .= '<div class="value">(' . $this->join_array($aura, 'keywords') . ')</div>';
     }
 
     if ($aura->{'range'}) {
@@ -363,7 +361,7 @@ class syntax_plugin_mobber
     if ($json->{$key}) {
       return
         '<div class="group ' . $key . '">' .
-          '<div class="label"> ' . $label . ' </div>' .
+          '<div class="label"> ' . $label . '</div>' .
           '<div class="value">' . $this->join($json, $key, true, false) . '</div>' .
         '</div>';
     } else {
@@ -414,7 +412,7 @@ class syntax_plugin_mobber
 
   private function join_resist($resist)
   {
-    return $this->join($resist, 'value') . $this->join($resist, 'type', true, false);
+    return $this->join($resist, 'value', true, false) . $this->join($resist, 'type', true, false);
   }
 
   private function render_vulnerable($mob)
@@ -446,7 +444,133 @@ class syntax_plugin_mobber
   private function join_vunlerable($vunlerable)
   {
     return
-      $this->join($vunlerable, 'value') . $this->join($vunlerable, 'type', true, false);
+      $this->join($vunlerable, 'value', true, false) . $this->join($vunlerable, 'type', true, false);
+  }
+
+  private function render_saving_throws($mob)
+  {
+    if ($mob->{'saving_throws'}) {
+      return
+        '<div class="row">' .
+          $this->render_value($mob, 'saving_throws', 'Saving Throws') .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_speed($mob)
+  {
+    if ($mob->{'speed'}) {
+      return
+        '<div class="row">' .
+          $this->render_value($mob, 'speed', 'Speed') .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_action_points($mob)
+  {
+    if ($mob->{'action_points'}) {
+      return
+        '<div class="row">' .
+          $this->render_value($mob, 'action_points', 'Action Points') .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_powers($mob)
+  {
+    $powers = $mob->{'powers'};
+    
+    if ($powers && count($powers) > 0) {
+      $joined = '';
+      
+      foreach ($powers as $power) {
+        $joined .= $this->render_power($power);
+      }
+      
+      return $joined;
+    } else {
+      return '';
+    }
+  }
+
+  private function render_power($power)
+  {
+    $joined = '';
+    $joined .= '<div class="row power">';
+    $joined .= '<div class="shade">';
+    
+    if ($power->{'name'}) {
+      $joined .= '<div class="label">' . $this->join($power, 'name', false, true) . '</div>';
+    }
+
+    if ($power->{'action'} || $power->{'recharge'}) {
+      $joined .= '<div class="value">(';
+      $joined .= $this->join($power, 'action', false, false);
+      if ($power->{'action'} || $power->{'recharge'}) {
+        $joined .= ', ';
+      }
+      $joined .= $this->join($power, 'recharge', false, false, false);
+      $joined .= ')</div>';
+    }
+    
+    if ($power->{'keywords'} && count($power->{'keywords'}) > 0) {
+      $joined .= '<div class="value">';
+      $joined .= $this->join_array($power, 'keywords', true);
+      $joined .= '</div>';
+    }
+    
+    $joined .= '</div>'; // shade
+    
+    $joined .= '<div class="value">';
+
+    if ($power->{'range'}) {
+      $joined .= $this->render_range($power->{'range'});
+    }
+    
+    //           Reach 3; +26 vs AC; 2d8 + 9 damage. If the attack reduces a 
+    // humanoid living target to 0 hit points or fewer, the target disappears 
+    // and becomes a soulspiked spirit impaled on the devourer (see soulspiked 
+    // spirit).
+    //         </div>
+    $joined .= 'placeholder';
+    $joined .= '</div>';
+    $joined .= '</div>'; // row
+
+    return $joined;
+  }
+
+  private function render_range($range)
+  {
+    $joined = '';
+
+    if ($range->{'reach'}) {
+      $joined .= $this->render_value($range, 'reach', 'Reach');
+    }
+
+    if ($range->{'range'}) {
+      $joined .= $this->render_value($range, 'range', 'Range');
+    }
+
+    if ($range->{'area_burst'}) {
+      $joined .= $this->render_value($range, 'area_burst', 'Area burst');
+    }
+
+    if ($range->{'close_burst'}) {
+      $joined .= $this->render_value($range, 'close_burst', 'Close burst');
+    }
+
+    if ($range->{'close_blast'}) {
+      $joined .= $this->render_value($range, 'close_blast', 'Close blast');
+    }
+
+    return $joined;
   }
 
   private function join($json, $key, $padleft = true, $padright = true, $ucwords = true)
