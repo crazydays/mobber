@@ -34,7 +34,7 @@
 }
 
 .mobber .group .value:after {
-	content: '; ';
+	content: ';';
 }
 
 .mobber .half {

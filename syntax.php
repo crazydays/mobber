@@ -171,7 +171,10 @@ class syntax_plugin_mobber
   {
     return
       $this->render_initiative_senses($mob) .
-      $this->render_auras($mob);
+      $this->render_auras($mob) .
+      $this->render_hitpoints_bloodied($mob) .
+      $this->render_defenses($mob) .
+      $this->render_immune($mob);
   }
 
   private function render_initiative_senses($mob)
@@ -294,6 +297,93 @@ class syntax_plugin_mobber
     return $joined;
   }
   
+  private function render_hitpoints_bloodied($mob)
+  {
+    if ($mob->{'hitpoints'} || $mob->{'bloodied'}) {
+      return
+        '<div class="row">' .
+          $this->render_hitpoints($mob) .
+          $this->render_bloodied($mob) .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_hitpoints($mob)
+  {
+    return $this->render_value($mob, 'hitpoints', 'HP');
+  }
+
+  private function render_bloodied($mob)
+  {
+    return $this->render_value($mob, 'bloodied', 'Bloodied');
+  }
+  
+  private function render_defenses($mob)
+  {
+    $defenses = $mob->{'defenses'};
+    if ($defenses) {
+      return
+        '<div class="row">' .
+          $this->render_armorclass($defenses) .
+          $this->render_fortitude($defenses) .
+          $this->render_reflex($defenses) .
+          $this->render_will($defenses) .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_armorclass($defenses)
+  {
+    return $this->render_value($defenses, 'armorclass', 'AC');
+  }
+
+  private function render_fortitude($defenses)
+  {
+    return $this->render_value($defenses, 'fortitude', 'Fortitude');
+  }
+
+  private function render_reflex($defenses)
+  {
+    return $this->render_value($defenses, 'reflex', 'Reflex');
+  }
+
+  private function render_will($defenses)
+  {
+    return $this->render_value($defenses, 'will', 'Will');
+  }
+
+  private function render_value($json, $key, $label)
+  {
+    if ($json->{$key}) {
+      return
+        '<div class="group ' . $key . '">' .
+          '<div class="label"> ' . $label . ' </div>' .
+          '<div class="value">' . $this->join($json, $key, true, false) . '</div>' .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_immune($mob)
+  {
+    if ($mob->{'immune'} && count($mob->{'immune'})) {
+      return
+        '<div class="row">' .
+          '<div class="group immune">' .
+            '<div class="label">Immune</div>' .
+            '<div class="value"> ' . $this->join_array($mob, 'immune') . '</div>' . 
+          '</div>' .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
   private function join($json, $key, $padleft = true, $padright = true, $ucwords = true)
   {
     if ($json->{$key}) {

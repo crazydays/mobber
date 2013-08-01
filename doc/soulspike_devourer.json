@@ -23,28 +23,28 @@
       "description":"the soulspike devourer and all allies in the aura gain a bonus to all defenses equal to one-half the number of soulspiked spirits impaled on the creature"
     }
   ],
+  "hitpoints":375,
+  "bloodied":188,
   "defenses":{
-    "hitpoints":375,
-    "bloodied":188,
     "armourclass":38,
     "fortitude":37,
     "reflex":29,
-    "will":34,
-    "immune":["disease"],
-    "resist":[
-      {
-        "type":"necrotic",
-        "value":20
-      }
-    ],
-    "vunlerable":[
-      {
-        "type":"radiant",
-        "value":10,
-        "description":"when the soulspike devourer takes radiant damage, its newest soulspiked spirit gets a saving throw to escape"
-      }
-    ]
+    "will":34
   },
+  "immune":["disease"],
+  "resist":[
+    {
+      "type":"necrotic",
+      "value":20
+    }
+  ],
+  "vunlerable":[
+    {
+      "type":"radiant",
+      "value":10,
+      "description":"when the soulspike devourer takes radiant damage, its newest soulspiked spirit gets a saving throw to escape"
+    }
+  ],
   "saving_throws":2,
   "speed":6,
   "action_points":1,
