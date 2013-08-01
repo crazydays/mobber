@@ -169,7 +169,9 @@ class syntax_plugin_mobber
   
   private function render_body($mob)
   {
-    return $this->render_initiative_senses($mob);
+    return
+      $this->render_initiative_senses($mob) .
+      $this->render_auras($mob);
   }
 
   private function render_initiative_senses($mob)
@@ -245,6 +247,51 @@ class syntax_plugin_mobber
     } else {
       return '';
     }
+  }
+  
+  private function render_auras($mob)
+  {
+    $auras = $mob->{'auras'};
+    
+    if ($auras && count($auras) > 0) {
+      $joined = '';
+
+      foreach ($auras as $aura) {
+        $joined .= $this->render_aura($aura);
+      }
+
+      return $joined;
+    } else {
+      return '';
+    }
+  }
+
+  private function render_aura($aura)
+  {
+    $joined = '';
+    $joined .= '<div class="row">';
+    $joined .= '<div class="group aura">';
+    
+    if ($aura->{'name'}) {
+      $joined .= '<div class="label">' . $this->join($aura, 'name') . '</div>';
+    }
+
+    if ($aura->{'keywords'}) {
+      $joined .= '<div class="value"> (' . $this->join_array($aura, 'keywords') . ')</div>';
+    }
+
+    if ($aura->{'range'}) {
+      $joined .= '<div class="value"> Aura' . $this->join($aura, 'range', true, false) . '</div>';
+    }
+
+    if ($aura->{'description'}) {
+      $joined .= '<div class="value">' . $this->join($aura, 'description', true, false, false) . '</div>';
+    }
+    
+    $joined .= '</div>';
+    $joined .= '</div>';
+    
+    return $joined;
   }
   
   private function join($json, $key, $padleft = true, $padright = true, $ucwords = true)

@@ -18,9 +18,9 @@
   "auras":[
     {
       "name":"Soulspike Ward",
-      "keywords":[],
+      "keywords":["necrotic"],
       "range":10,
-      "description":"the soulspike devourer and all allies in the aura gain a bonus to all defenses equal to one-half the number of soulspiked spirits impaled on the creature."
+      "description":"the soulspike devourer and all allies in the aura gain a bonus to all defenses equal to one-half the number of soulspiked spirits impaled on the creature"
     }
   ],
   "defenses":{
