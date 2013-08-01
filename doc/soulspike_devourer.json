@@ -26,7 +26,7 @@
   "hitpoints":375,
   "bloodied":188,
   "defenses":{
-    "armourclass":38,
+    "armorclass":38,
     "fortitude":37,
     "reflex":29,
     "will":34
@@ -38,7 +38,7 @@
       "value":20
     }
   ],
-  "vunlerable":[
+  "vulnerable":[
     {
       "type":"radiant",
       "value":10,

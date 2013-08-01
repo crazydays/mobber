@@ -174,7 +174,9 @@ class syntax_plugin_mobber
       $this->render_auras($mob) .
       $this->render_hitpoints_bloodied($mob) .
       $this->render_defenses($mob) .
-      $this->render_immune($mob);
+      $this->render_immune($mob) .
+      $this->render_resist($mob) .
+      $this->render_vulnerable($mob);
   }
 
   private function render_initiative_senses($mob)
@@ -384,13 +386,76 @@ class syntax_plugin_mobber
     }
   }
 
+  private function render_resist($mob)
+  {
+    $resists = $mob->{'resist'};
+    if ($resists && count($resists) > 0) {
+      $joined = '';
+      $joined .= '<div class="row">';
+      $joined .= '<div class="group resist">';
+      $joined .= '<div class="label">Resist</div>';
+      
+      foreach ($resists as $resist) {
+        $joined .= '<div class="value">' . $this->join_resist($resist) . '</div>';
+
+        if ($resist->{'description'}) {
+          $joined .= '<div class="value">' . $this->join($resist, 'description', true, false, false) . '</div>';
+        }
+      }
+      
+      $joined .= '</div>';
+      $joined .= '</div>';
+      
+      return $joined;
+    } else {
+      return '';
+    }
+  }
+
+  private function join_resist($resist)
+  {
+    return $this->join($resist, 'value') . $this->join($resist, 'type', true, false);
+  }
+
+  private function render_vulnerable($mob)
+  {
+    $vunlerables = $mob->{'vulnerable'};
+    if ($vunlerables && count($vunlerables) > 0) {
+      $joined = '';
+      $joined .= '<div class="row">';
+      $joined .= '<div class="group vunlerable">';
+      $joined .= '<div class="label">Vunlerable</div>';
+      
+      foreach ($vunlerables as $vunlerable) {
+        $joined .= '<div class="value">' . $this->join_vunlerable($vunlerable) . '</div>';
+        
+        if ($vunlerable->{'description'}) {
+          $joined .= '<div class="value">' . $this->join($vunlerable, 'description', true, false, false) . '</div>';
+        }
+      }
+      
+      $joined .= '</div>';
+      $joined .= '</div>';
+      
+      return $joined;
+    } else {
+      return '';
+    }
+  }
+
+  private function join_vunlerable($vunlerable)
+  {
+    return
+      $this->join($vunlerable, 'value') . $this->join($vunlerable, 'type', true, false);
+  }
+
   private function join($json, $key, $padleft = true, $padright = true, $ucwords = true)
   {
     if ($json->{$key}) {
       return
-        ($padleft ? ' ' : '') .
+        ($padleft ? '&nbsp;' : '') .
         ($ucwords ? ucwords($json->{$key}) : $json->{$key}) .
-        ($padright ? ' ' : '');
+        ($padright ? '&nbsp;' : '');
     } else {
       return '';
     }
@@ -399,17 +464,17 @@ class syntax_plugin_mobber
   private function join_array($json, $key, $padleft = false, $padright = false, $ucwords = true)
   {
     if ($json->{$key} && count($json->{$key}) > 0) {
-      $joined = ($padleft ? ' ' : '');
+      $joined = ($padleft ? '&nbsp;' : '');
 
       for ($i = 0; $i < count($json->{$key}); $i++) {
         if ($i > 0) {
-          $joined .= ', ';
+          $joined .= ',&nbsp;';
         }
         
         $joined .= ($ucwords ? ucwords($json->{$key}[$i]) : $json->{$key}[$i]);
       }
 
-      $joined .= ($padright ? ' ' : '');
+      $joined .= ($padright ? '&nbsp;' : '');
       return $joined;
     } else {
       return '';
