@@ -533,13 +533,21 @@ class syntax_plugin_mobber
     if ($power->{'range'}) {
       $joined .= $this->render_range($power->{'range'});
     }
-    
-    //           Reach 3; +26 vs AC; 2d8 + 9 damage. If the attack reduces a 
-    // humanoid living target to 0 hit points or fewer, the target disappears 
-    // and becomes a soulspiked spirit impaled on the devourer (see soulspiked 
-    // spirit).
-    //         </div>
-    $joined .= 'placeholder';
+
+    if ($power->{'attack'}) {
+      $joined .= $this->render_attack($power->{'attack'});
+    }
+
+    if ($power->{'damage'}) {
+      foreach ($power->{'damage'} as $damage) {
+        $joined .= $this->render_damage($damage);
+      }
+    }
+
+    $joined .= $this->render_hit($power);
+    $joined .= $this->render_miss($power);
+    $joined .= $this->render_description($power);
+
     $joined .= '</div>';
     $joined .= '</div>'; // row
 
@@ -571,6 +579,73 @@ class syntax_plugin_mobber
     }
 
     return $joined;
+  }
+
+  private function render_attack($attack)
+  {
+    return
+      '<div class="group">' .
+        '<div class="value">' .
+          $this->join($attack, 'bonus') . 'vs' . $this->join($attack, 'versus', true, false) .
+        '</div>' .
+      '</div>';
+  }
+
+  private function render_damage($damage)
+  {
+    $joined = '';
+    $joined .= '<div class="group">';
+    $joined .= '<div class="value">';
+    $joined .=
+      $this->join($damage, 'count', true, false) . 'd' .
+      $this->join($damage, 'die', false) . '+' .
+      $this->join($damage, 'bonus', false);
+
+    if ($damage->{'keywords'} && count($damage->{'keywords'})) {
+      $joined .= $this->join_array($damage, 'keywords', false, true, false);
+    }
+
+    $joined .= 'damage';
+    $joined .= '</div>';
+    $joined .= '</div>';
+    
+    return $joined;
+  }
+
+  private function render_hit($power)
+  {
+    if ($power->{'hit'}) {
+      return
+        '<div class="value">' .
+          $this->join($power, 'hit', true, false, false) .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_miss($power)
+  {
+    if ($power->{'miss'}) {
+      return
+        '<div class="value">' .
+          $this->join($power, 'miss', true, false, false) .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_description($power)
+  {
+    if ($power->{'description'}) {
+      return
+        '<div class="value">' .
+          $this->join($power, 'description', true, false, false) .
+        '</div>';
+    } else {
+      return '';
+    }
   }
 
   private function join($json, $key, $padleft = true, $padright = true, $ucwords = true)
