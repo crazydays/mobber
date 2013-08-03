@@ -64,6 +64,9 @@ class syntax_plugin_mobber
         $this->render_head($mob) .
         $this->render_body($mob) .
         $this->render_powers($mob) .
+        $this->render_alignment_languages($mob) .
+        $this->render_skills($mob) .
+        $this->render_ability_scores($mob) .
       '</div>';
   }
 
@@ -643,6 +646,133 @@ class syntax_plugin_mobber
         '<div class="value">' .
           $this->join($power, 'description', true, false, false) .
         '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_alignment_languages($mob)
+  {
+    if ($mob->{'alignment'} || $mob->{'languages'}) {
+      return
+        '<div class="row shade">' .
+          $this->render_alignment($mob) .
+          $this->render_languages($mob) .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_alignment($mob)
+  {
+    return $this->render_value($mob, 'alignment', 'Alignment');
+  }
+
+  private function render_languages($mob)
+  {
+    if ($mob->{'languages'}) {
+      return
+        '<div class="group languages">' .
+          '<div class="label">Languages</div>' .
+          '<div class="value">' . $this->join_array($mob, 'languages', true) . '</div>' .
+        '</div>';
+    } else {
+      return '';
+    }
+  }
+
+  private function render_skills($mob)
+  {
+    $skills = $mob->{'skills'};
+    
+    if ($skills && count($skills)) {
+      $joined = '';
+      $joined .= '<div class="row shade">';
+      $joined .= '<div class="label">Skills</div>';
+      
+      foreach ($skills as $skill) {
+        $joined .= $this->render_skill($skill);
+      }
+      
+      $joined .= '</div>';
+      
+      return $joined;
+    } else {
+      return '';
+    }
+  }
+
+  private function render_skill($skill)
+  {
+    if ($skill->{'name'} || $skill->{'modifier'}) {
+      $joined = '';
+      
+      $joined .= '<div class="group">';
+      $joined .= '<div class="value">';
+      
+      if ($skill->{'name'}) {
+        $joined .= $this->join($skill, 'name', true, false);
+      }
+      
+      if ($skill->{'modifier'}) {
+        $joined .= $this->join($skill, 'modifier', true, false);
+      }
+      
+      $joined .= '</div>';
+      $joined .= '</div>';
+      
+      return $joined;
+    } else {
+      return '';
+    }
+  }
+
+  private function render_ability_scores($mob)
+  {
+    $ability_scores = $mob->{'ability_scores'};
+    
+    if ($ability_scores && count($ability_scores) > 0) {
+      $joined = '';
+      
+      $joined .= '<div class="row shade">';
+      $joined .= $this->render_ability_score($ability_scores, 'strength', 'Str');
+      $joined .= $this->render_ability_score($ability_scores, 'dexterity', 'Dex');
+      $joined .= $this->render_ability_score($ability_scores, 'wisdom', 'Wis');
+      $joined .= $this->render_ability_score($ability_scores, 'constitution', 'Con');
+      $joined .= $this->render_ability_score($ability_scores, 'intelligence', 'Int');
+      $joined .= $this->render_ability_score($ability_scores, 'charisma', 'Cha');
+      $joined .= '</div>';
+      
+      return $joined;
+    } else {
+      return '';
+    }
+  }
+
+  private function render_ability_score($ability_scores, $ability, $label)
+  {
+    $ability_score = $ability_scores->{$ability};
+    
+    if ($ability_score && ($ability_score->{'value'} || $ability_score->{'modifier'})) {
+      $joined = '';
+      
+      $joined .= '<div class="group third">';
+      $joined .= '<div class="label">' . $label . '</div>';
+      $joined .= '<div class="value">';
+
+      if ($ability_score->{'value'}) {
+        $joined .= $this->join($ability_score, 'value', true, false);
+      }
+      
+      if ($ability_score->{'modifier'}) {
+        $joined .= '&nbsp;(' . $this->join($ability_score, 'modifier', false, false) . ')';
+      }
+      
+      $joined .= '</div>';
+      $joined .= '</div>';
+      
+      return $joined;
     } else {
       return '';
     }
