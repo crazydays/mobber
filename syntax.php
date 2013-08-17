@@ -67,6 +67,7 @@ class syntax_plugin_mobber
         $this->render_alignment_languages($mob) .
         $this->render_skills($mob) .
         $this->render_ability_scores($mob) .
+        $this->render_equipment($mob) .
       '</div>';
   }
 
@@ -773,6 +774,21 @@ class syntax_plugin_mobber
       $joined .= '</div>';
       
       return $joined;
+    } else {
+      return '';
+    }
+  }
+  
+  private function render_equipment($mob)
+  {
+    if ($mob->{'equipment'} && count($mob->{'equipment'}) > 0) {
+      return
+        '<div class="row group">' .
+          '<div class="label">Equipment</div>' .
+          '<div class="value">' .
+            $this->join_array($mob, 'equipment', true) .
+          '</div>' .
+        '</div>';
     } else {
       return '';
     }
